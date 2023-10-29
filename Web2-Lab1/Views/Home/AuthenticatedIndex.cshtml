@@ -1,0 +1,44 @@
+﻿@{
+    ViewData["Title"] = "Home";
+}
+@model SampleMvcApp.ViewModels.NatjecanjeInputViewModel
+
+<h1>Unesite podatke za novo natjecanje</h1>
+
+@using (Html.BeginForm("CreateNatjecanje", "Home", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-group">
+        <label for="Naziv">Naziv natjecanja</label>
+        <input type="text" id="Naziv" name="Naziv" class="form-control" required>
+    </div>
+
+    <div class="form-group">
+        <label for="Natjecatelji">Popis natjecatelja (odvojeni zarezom ili novim redom)</label>
+        <textarea id="PopisNatjecatelja" name="PopisNatjecatelja" class="form-control" required></textarea>
+    </div>
+
+    <div class="form-group">
+        <label for="Bodovanje">Sustav bodovanja (pobjeda/remi/poraz)</label>
+        <input type="text" id="SustavBodovanja" name="SustavBodovanja" class="form-control" required>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Kreiraj natjecanje</button>
+}
+
+@if (!ViewData.ModelState.IsValid)
+{
+    <div class="alert alert-danger">
+        <p>Greške u unosu:</p>
+        <ul>
+            @foreach (var key in ViewData.ModelState.Keys)
+            {
+                foreach (var error in ViewData.ModelState[key].Errors)
+                {
+                    <li>@error.ErrorMessage</li>
+                }
+            }
+        </ul>
+    </div>
+}

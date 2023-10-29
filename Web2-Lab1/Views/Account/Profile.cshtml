@@ -1,0 +1,38 @@
+﻿@model SampleMvcApp.ViewModels.UserNatjecanjaViewModel
+@{
+    ViewData["Title"] = "Moja natjecanja";
+}
+
+<h1 style="margin-bottom: 20px;">Moja natjecanja</h1>
+
+<ul style="list-style-type: none;">
+    @foreach (var natjecanje in @Model.Natjecanja)
+    {
+        <li>
+            @if (natjecanje.IsPublic)
+            {
+                <div style="display: flex; justify-content: space-between;">
+                    <div>
+                        <div style="font-size: 20px;">@natjecanje.Naziv</div>
+                        <p>Public URL: <a href="@natjecanje.PublicUrl">@natjecanje.PublicUrl</a></p>
+                    </div>
+                    <div style="float: right;">
+                        <a asp-controller="Account" asp-action="Natjecanje" asp-route-id="@natjecanje.Id" class="btn btn-primary">Prikaži</a>
+                    </div>
+                </div>
+            }
+            else
+            {
+                <div style="display: flex; justify-content: space-between;">
+                    <div style="font-size: 20px;">@natjecanje.Naziv</div>
+                    <div style="float: right;">
+                        <a asp-controller="Account" asp-action="Natjecanje" asp-route-id="@natjecanje.Id" class="btn btn-primary">Prikaži</a>
+                        <form method="post">
+                            <button asp-controller="Account" asp-action="Publish" asp-route-id="@natjecanje.Id" class="btn btn-success">Učini javno</button>
+                        </form>
+                    </div>
+                </div>
+            }
+        </li>
+    }
+</ul>

@@ -1,0 +1,70 @@
+﻿@model SampleMvcApp.ViewModels.NatjecanjeViewModel
+
+<h1>@Model.Natjecanje.Naziv</h1>
+
+<h2>Poredak natjecatelja:</h2>
+<table class="table table1">
+    <thead>
+        <tr>
+            <th>Natjecatelj</th>
+            <th>Odigrano</th>
+            <th>Razlika</th>
+            <th>Bodovi</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var natjecatelj in Model.Natjecatelji.OrderByDescending(n => n.BrojBodova).ThenByDescending(n => n.Razlika))
+        {
+            <tr>
+                <td>@natjecatelj.Naziv</td>
+                <td>@natjecatelj.BrojOdigranihKola</td>
+                <td>@natjecatelj.Razlika</td>
+                <td>@natjecatelj.BrojBodova</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<h2>Rezultati:</h2>
+<table class="table table2">
+    <thead>
+        <tr>
+            <th>Kolo</th>
+            <th>Domaćin</th>
+            <th>Rezultat</th>
+            <th>Gost</th>
+            <th>Ishod</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var rezultat in Model.Rezultati.OrderBy(n => n.Kolo))
+        {
+            <tr>
+                <td>@rezultat.Kolo</td>
+                <td>@rezultat.Domacin.Naziv</td>
+                <td>@rezultat.Vrijednost</td>
+                <td>@rezultat.Gost.Naziv</td>
+                
+                @if (rezultat.Ishod == 3) { <td></td> } 
+                else if (rezultat.Ishod == 0) { <td>X</td> } 
+                else { <td>@rezultat.Ishod</td> }
+
+                <td><a asp-controller="Rezultat" asp-action="Uredi" asp-route-id="@rezultat.Domacin.Id" asp-route-id2="@rezultat.Gost.Id" class="btn btn-primary">Uredi</a></td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<style>
+    table.table2 th, table.table2 td {
+        padding: 8px;
+        text-align: center;
+    }
+
+    table.table2 th:nth-child(1), table.table2 td:nth-child(1),
+    table.table2 th:nth-child(3), table.table2 td:nth-child(3),
+    table.table2 th:nth-child(5), table.table2 td:nth-child(5) {
+        width: 50px;
+    }
+</style>

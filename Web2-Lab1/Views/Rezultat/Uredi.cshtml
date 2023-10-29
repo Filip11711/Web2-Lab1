@@ -1,0 +1,76 @@
+﻿@model SampleMvcApp.ViewModels.RezultatViewModel
+
+<h1>Uredi rezultat</h1>
+
+<h5>Postaviti vrijednost polja 'Rezultat' u obliku 'broj:broj'</h5>
+<h5>Ishod: 0 - remi, 1 - pobjedio domaćin, 2 - pobjedio gost, 3 - nije odigrano</h5>
+
+<form asp-controller="Rezultat" asp-action="Spremi" method="post">
+    @Html.HiddenFor(model => model.domacinId)
+    
+    <div class="form-group">
+        <label for="Domacin">Domaćin</label>
+        <input type="text" id="Domacin" name="Domacin" value="@Model.domacin" readonly />
+    </div>
+
+    <div class="form-group">
+        <label for="Vrijednost">Rezultat</label>
+        <input type="text" id="Vrijednost" name="Vrijednost" value="@Model.vrijednost" />
+    </div>
+
+    @Html.HiddenFor(model => model.gostId)
+
+    <div class="form-group">
+        <label for="Gost">Gost</label>
+        <input type="text" id="Gost" name="Gost" value="@Model.gost" readonly />
+    </div>
+
+    <div class="form-group">
+        <label for="Ishod">Ishod</label>
+        <select id="Ishod" name="Ishod">
+            <option value="0">0</option>
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+        </select>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Spremi promjene</button>
+</form>
+
+@if (!ViewData.ModelState.IsValid)
+{
+    <div class="alert alert-danger">
+        <p>Greške u unosu:</p>
+        <ul>
+            @foreach (var key in ViewData.ModelState.Keys)
+            {
+                foreach (var error in ViewData.ModelState[key].Errors)
+                {
+                    <li>@error.ErrorMessage</li>
+                }
+            }
+        </ul>
+    </div>
+}
+
+<style>
+    .form-group {
+        display: inline-block;
+        margin-right: 20px;
+    }
+</style>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        var ishodSelect = document.getElementById("Ishod");
+        var ishodModelValue = @Model.ishod;
+
+        for (var i = 0; i < ishodSelect.options.length; i++) {
+            if (parseInt(ishodSelect.options[i].value) === ishodModelValue) {
+                ishodSelect.options[i].selected = true;
+                break;
+            }
+        }
+    });
+</script>
